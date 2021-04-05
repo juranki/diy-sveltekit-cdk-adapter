@@ -3,6 +3,7 @@ import * as path from 'path'
 import * as fs from 'fs'
 //@ts-ignore
 import ParcelBundler from "parcel-bundler";
+import { spawn } from 'child_process';
 
 const rmRecursive = (p:string) => {
     if (!fs.existsSync(p)) return
@@ -40,6 +41,20 @@ export const adapter: Adapter = {
         )
         await bundler.bundle()
 
+        const proc = spawn('npx', [
+            'cdk',
+            'deploy',
+            'AdapterStack',
+            '--require-approval', 'never',
+        ], {
+            cwd: __dirname,
+            env: Object.assign({
+                SERVER_PATH: path.join(contentPath, 'server-bundle'),
+                STATIC_PATH: path.join(contentPath, 'static'),
+            }, process.env),
+        })
+        proc.stdout.pipe(process.stdout)
+        proc.stderr.pipe(process.stderr)
     }
 }
 
