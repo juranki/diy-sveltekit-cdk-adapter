@@ -1,6 +1,8 @@
 import type { Adapter } from '@sveltejs/kit'
 import * as path from 'path'
 import * as fs from 'fs'
+//@ts-ignore
+import ParcelBundler from "parcel-bundler";
 
 const rmRecursive = (p:string) => {
     if (!fs.existsSync(p)) return
@@ -25,6 +27,19 @@ export const adapter: Adapter = {
         utils.copy_server_files(serverPath)
         utils.copy_client_files(staticPath)
         utils.copy_static_files(staticPath)
+
+        const bundler = new ParcelBundler(
+            [path.join(__dirname, 'lambda', 'index.js')],
+            {
+                outDir: path.join(contentPath, 'server-bundle'),
+                bundleNodeModules: true,
+                target: 'node',
+                sourceMaps: false,
+                minify: false,
+            },
+        )
+        await bundler.bundle()
+
     }
 }
 
