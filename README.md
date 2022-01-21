@@ -1,4 +1,10 @@
-# create-svelte
+# WARNING: Information here is outdated
+
+Both SvelteKit adapter intereface and CDK have changed after this experiment.
+
+More up-to-date info on the subject can be found from my [sveltekit-cdk](https://github.com/juranki/sveltekit-cdk) project. 
+
+## create-svelte
 
 Everything you need to build a Svelte project, powered by [`create-svelte`](https://github.com/sveltejs/kit/tree/master/packages/create-svelte);
 
